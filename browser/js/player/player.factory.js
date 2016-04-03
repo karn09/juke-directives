@@ -1,6 +1,6 @@
 'use strict';
 
-juke.factory('PlayerFactory', function ($rootScope) {
+juke.factory('PlayerFactory', function($rootScope) {
 
   // state
 
@@ -17,17 +17,17 @@ juke.factory('PlayerFactory', function ($rootScope) {
 
   var player = {};
 
-  player.pause = function () {
+  player.pause = function() {
     audio.pause();
     playing = false;
   };
 
-  player.resume = function () {
+  player.resume = function() {
     audio.play();
     playing = true;
   };
 
-  player.start = function (song, list) {
+  player.start = function(song, list) {
     player.pause();
     audio.src = song.audioUrl;
     audio.load();
@@ -36,42 +36,49 @@ juke.factory('PlayerFactory', function ($rootScope) {
     player.resume();
   };
 
-  player.isPlaying = function () {
+  player.isPlaying = function() {
     return playing;
   };
 
-  player.getCurrentSong = function () {
+  player.getCurrentSong = function() {
     return currentSong;
   };
 
-  function mod (num, m) { return ((num % m) + m) % m; };
+  function mod(num, m) { return ((num % m) + m) % m; };
 
-  function skip (interval) {
+  function skip(interval) {
     var index = currentList.indexOf(currentSong);
     index = mod(index + interval, currentList.length);
     player.start(currentList[index], currentList);
   }
 
-  player.next = function () {
+  player.next = function() {
     skip(1);
   };
 
-  player.previous = function () {
+  player.previous = function() {
     skip(-1);
   };
 
-  player.getProgress = function () {
+  player.getProgress = function() {
+    // console.log('prog: ', progress);
+    // console.log('audioTime: ', audio.currentTime);
     return progress;
+  };
+
+  player.setProgress = function(time) {
+
+    audio.currentTime = time * audio.duration;
   };
 
   // audio event listening
 
-  audio.addEventListener('ended', function () {
+  audio.addEventListener('ended', function() {
     player.next();
     $rootScope.$evalAsync();
   });
 
-  audio.addEventListener('timeupdate', function () {
+  audio.addEventListener('timeupdate', function() {
     progress = audio.currentTime / audio.duration;
     $rootScope.$evalAsync();
   });

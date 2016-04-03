@@ -10,6 +10,7 @@ juke.controller('PlayerCtrl', function($scope, $rootScope, PlayerFactory) {
   };
 
   $scope.getPercent = function() {
+    // console.log('perc:', PlayerFactory.getProgress() * 100);
     return PlayerFactory.getProgress() * 100;
   };
 

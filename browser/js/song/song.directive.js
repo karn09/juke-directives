@@ -26,3 +26,14 @@ juke.directive('songsList', ['PlayerFactory', function(PlayerFactory) {
     }
   };
 }]);
+
+juke.directive('doubleClick', function() {
+  return {
+    restrict: 'A',
+    link: function(scope, element) {
+      element.on('dblclick', function() {
+        scope.$root.start(scope.song, scope.$parent.songs);
+      });
+    }
+  };
+});
